@@ -1,0 +1,58 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode').toInteger()
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+def fCompileSDKVersion = localProperties.getProperty('flutter.compileSdkVersion').toInteger()
+def fMinSDKVersion = localProperties.getProperty('flutter.minSdkVersion').toInteger()
+def fTargetSDKVersion = localProperties.getProperty('flutter.targetSdkVersion').toInteger()
+
+android {
+    namespace "com.example.ecommerce"
+    compileSdkVersion fCompileSDKVersion
+    ndkVersion flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        applicationId "com.example.ecommerce"
+        minSdkVersion fMinSDKVersion
+        targetSdkVersion fTargetSDKVersion
+        versionCode flutterVersionCode
+        versionName flutterVersionName
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {}
